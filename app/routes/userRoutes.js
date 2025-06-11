@@ -1,11 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
+const { verifyToken, requireAdmin} = require('../middlewares/authMiddleware');
 
-router.get('/', userController.getAllUsers);
-router.get('/:id',userController.getUserById);
-router.post('/',userController.createUser);
-router.put('/:id',userController.updateUser);
-router.delete('/:id',userController.removeUser);
+//need token
+router.get('/', verifyToken, userController.getAllUsers);
+router.get('/:id', verifyToken, userController.getUserById);
+//need token & admin
+router.post('/',verifyToken, requireAdmin, userController.createUser);
+router.put('/:id',verifyToken, requireAdmin, userController.updateUser);
+router.delete('/:id',verifyToken, requireAdmin ,userController.removeUser);
 
 module.exports = router

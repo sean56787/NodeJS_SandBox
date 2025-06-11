@@ -11,7 +11,6 @@ exports.getUserById = (req, res) =>{
 };
 exports.createUser = (req, res) =>{
     const {name} = req.body;
-    console.log('name:'+name);
     if(!name) return res.status(400).json({error:'name is required'})
     const newUser = User.create(name);
     res.status(201).json(newUser);

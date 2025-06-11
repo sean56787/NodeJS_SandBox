@@ -4,7 +4,9 @@ let users = [
 ];
 
 module.exports = {
-    findAll: () => users,
+    findAll: () => {
+        return users;
+    },
     findById: (id) => users.find(u => u.id === id),
     create: (name) => {
         const newUser = {id: users.length + 1, name};
