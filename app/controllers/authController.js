@@ -1,26 +1,58 @@
+const {v4:uuidv4} = require('uuid');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const userModel = require('../models/userModel');
 const tokenModel = require('../models/tokenModel');
+const tokenStore = require('../utils/verifyTokenStore');
+const emailService = require('../services/emailService');
 
 exports.register = async(req, res) =>{
-    const {username, password} = req.body;
-    if(!username || !password)
-        return res.status(400).json({error:'username / password are required'});
+    const {username, password, email} = req.body;
+    if(!username || !password || !email)
+        return res.status(400).json({error:'username / password /email are required'});
     if(userModel.findByName(username))
         return res.status(409).json({error: 'user already exists'});
     const hashedPassword = await bcrypt.hash(password, 10);
-    //test
+
+    // test
+    let role = 'user';
     if(username == 'admin') role = 'admin';
     //
-    const user = userModel.create(username, hashedPassword, role);
-    res.status(201).json({msg:'user registed', user: {id: user.id, username: user.username, role: user.role}});
+
+    const userPayload = {
+        username,
+        hashedPassword,
+        email,
+        isVerified: false,
+    }
+
+    userModel.create(userPayload, role);
+    const verifyToken = uuidv4();
+    tokenStore.saveToken(verifyToken, username);
+    await emailService.sendVerificationEmail(email, verifyToken);
+
+    res.json({msg:'registed success, pls go verify your email'});
 };
+
+exports.verifyEmail = (req, res) =>{
+    const token = req.query.token;
+    const username = tokenStore.getUsernameByToken(token);
+
+    if(!username){
+        return res.status(400).json({error:'invalid verify link'});
+    }
+
+    userModel.verifyUser(username);
+    tokenStore.deleteToken(token);
+
+    res.json({msg:"account verified success"});
+}
 
 exports.login = async (req, res) => {
     const {username, password} = req.body;
     const user = userModel.findByName(username);
 
+    if(!user.isVerified) return res.status(401).json({error: 'email not verified'});
     if(!user) return res.status(401).json({error: 'not registed'});
     const match = await bcrypt.compare(password, user.password);
     if(!match) return res.status(401).json({error: 'wrong password'});

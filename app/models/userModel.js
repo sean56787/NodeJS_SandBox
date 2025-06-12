@@ -13,11 +13,12 @@ module.exports = {
     },
     findByName: (name) => users.find(user => user.username === name),
     findById: (id) => users.find(u => u.id === id),
-    create: (username, hashedPassword, role = 'user') => {
+    create: (userPayload, role = 'user') => {
         const newUser = {
             id:users.length+1, 
-            username: username, 
-            password: hashedPassword,
+            username: userPayload.username, 
+            password: userPayload.hashedPassword,
+            email: userPayload.email,
             role,
         }
         users.push(newUser);
@@ -45,5 +46,10 @@ module.exports = {
             page,
             totalPages: Math.ceil(users.length / limit),
         };
+    },
+    verifyUser: (username) =>{
+        const user = users.find(u=>u.username === username);
+        if(user) user.isVerified = true;
+        return user;
     },
 };

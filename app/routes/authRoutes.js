@@ -6,6 +6,7 @@ const validate = require('../middlewares/validateMiddleware');
 const {registerSchema, loginSchema, tokenSchema} = require('../validations/authValidation');
 //login
 router.post('/register', validate(registerSchema), authController.register);
+router.get('/verify-email', authController.verifyEmail);
 router.post('/login', validate(loginSchema), authController.login);
 router.post('/refresh', validate(tokenSchema), authController.refreshToken);
 router.post('/logout', validate(tokenSchema), authController.logout);
