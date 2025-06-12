@@ -27,7 +27,7 @@ exports.login = async (req, res) => {
 
     const payload = {id: user.id, username: user.username, role: user.role};
 
-    const accessToken = jwt.sign(payload, 'secret_key', {expiresIn:'1m'});
+    const accessToken = jwt.sign(payload, 'secret_key', {expiresIn:'15m'});
     const refreshToken = jwt.sign(payload, 'refresh_key', {expiresIn: '3h'});
 
     tokenModel.add(refreshToken);
@@ -41,7 +41,7 @@ exports.refreshToken = (req, res) =>{
     try{
         const user = jwt.verify(token, 'refresh_key');
         const payload = {id: user.id, username: user.username, role: user.role};
-        const newAccessToken = jwt.sign(payload, 'secret_key', {expiresIn: '1m'});
+        const newAccessToken = jwt.sign(payload, 'secret_key', {expiresIn: '15m'});
         res.json({accessToken: newAccessToken});
     }catch(err){
         return res.status(403).json({error: 'invalid refresh token'});

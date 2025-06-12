@@ -2,12 +2,13 @@ const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
 const { verifyToken, requireAdmin} = require('../middlewares/authMiddleware');
-
+const validate = require('../middlewares/validateMiddleware');
+const {registerSchema, loginSchema, tokenSchema} = require('../validations/authValidation');
 //login
-router.post('/register', authController.register);
-router.post('/login', authController.login);
-router.post('/refresh', authController.refreshToken);
-router.post('/logout', authController.logout);
+router.post('/register', validate(registerSchema), authController.register);
+router.post('/login', validate(loginSchema), authController.login);
+router.post('/refresh', validate(tokenSchema), authController.refreshToken);
+router.post('/logout', validate(tokenSchema), authController.logout);
 
 //need token & admin
 router.post('/',verifyToken, requireAdmin, authController.createUser);
