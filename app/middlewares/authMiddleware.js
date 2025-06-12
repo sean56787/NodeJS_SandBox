@@ -10,6 +10,7 @@ exports.verifyToken = (req, res, next) => {
 
     try{
         const user = jwt.verify(token, 'secret_key');
+        console.log(`current verified user => ${JSON.stringify(user)}`);
         req.user = user;
         next();
     } catch(err){

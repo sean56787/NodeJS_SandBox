@@ -9,20 +9,8 @@ exports.getUserById = (req, res) =>{
     if(!user) return res.status(404).json({error: 'user not found'})
     res.json(user);
 };
-exports.createUser = (req, res) =>{
-    const {name} = req.body;
-    if(!name) return res.status(400).json({error:'name is required'})
-    const newUser = User.create(name);
-    res.status(201).json(newUser);
+exports.getUserByName = (req, res) =>{
+    const user = User.findByName(req.params.username);
+    if(!user) return res.status(404).json({error: 'user not found'})
+    res.json(user);
 };
-exports.updateUser = (req, res) => {
-    const {name} = req.body;
-    const updated = User.update(parseInt(req.params.id),name);
-    if(!updated) return res.status(404).json({error:'user not found'})
-    res.json(updated);
-}
-exports.removeUser = (req, res) => {
-    const success = User.remove(parseInt(req.params.id));
-    if(!success) return res.status(404).json({error:'user not found'})
-    res.status(204).send();
-}

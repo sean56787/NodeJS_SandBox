@@ -1,15 +1,20 @@
 let users = [
-    {id: 1, name:'alice'},
-    {id: 2, name:'bob'}
+    
 ];
 
 module.exports = {
     findAll: () => {
         return users;
     },
+    findByName: (name) => users.find(user => user.username === name),
     findById: (id) => users.find(u => u.id === id),
-    create: (name) => {
-        const newUser = {id: users.length + 1, name};
+    create: (username, hashedPassword, role = 'user') => {
+        const newUser = {
+            id:users.length+1, 
+            username: username, 
+            password: hashedPassword,
+            role,
+        }
         users.push(newUser);
         return newUser;
     },
