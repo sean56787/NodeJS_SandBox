@@ -1,9 +1,10 @@
+//資料專用schema
 const joi = require('joi');
 
 const registerSchema = joi.object({
     username: joi.string().min(3).required(),
     password: joi.string().min(6).required(),
-    email: joi.string().email().required(),
+    email: joi.string().email(),
 });
 
 const loginSchema = joi.object({

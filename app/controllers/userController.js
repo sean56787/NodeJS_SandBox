@@ -1,3 +1,5 @@
+// 用戶查詢 需要admin
+
 const User = require('../models/userModel');
 
 exports.getAllUsers = (req, res) => {
@@ -14,6 +16,7 @@ exports.getAllUsers = (req, res) => {
     }
 
     const users = User.findAll();
+    console.log(JSON.stringify(users, null, 2));
     res.json(users);
 };
 exports.getUserById = (req, res) =>{

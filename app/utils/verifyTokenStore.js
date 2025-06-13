@@ -1,3 +1,5 @@
+//信箱驗證專用token model
+
 const tokenMap = new Map();
 
 exports.saveToken = (token, username) =>{

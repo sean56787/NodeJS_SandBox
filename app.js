@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
-const userRoutes = require('./app/routes/userRoutes');
-const authRoutes = require('./app/routes/authRoutes');
+const userRoutes = require('./app/routes/userRoutes'); //用戶查詢 route
+const authRoutes = require('./app/routes/authRoutes'); //權限設定 route
 
 app.use(express.json());
 app.use('/api/users', userRoutes);

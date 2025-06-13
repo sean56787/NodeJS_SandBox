@@ -1,3 +1,5 @@
+//Refresh JWT token 專用 model
+
 const refreshTokens = new Set();
 
 module.exports = {
