@@ -52,11 +52,11 @@ curl "http://localhost:3000/api/users/" -s -i -H "authorization: Bearer <這邊�
 ```
 #### 2-2. 查詢用戶資料(以ID查詢) (需要admin、jwt token)
 ```
-curl "http://localhost:3000/api/users/<這邊放入要查詢的Id>" -s -i -H "authorization: Bearer <這邊放入token>"
+curl "http://localhost:3000/api/users/id/<這邊放入要查詢的Id>" -s -i -H "authorization: Bearer <這邊放入token>"
 ```
 #### 2-3. 查詢用戶資料(以用戶名字查詢) (需要admin、jwt token)
 ```
-curl "http://localhost:3000/api/users/<這邊放入要查詢的Name>" -s -i -H "authorization: Bearer <這邊放入token>"
+curl "http://localhost:3000/api/users/name/<這邊放入要查詢的Name>" -s -i -H "authorization: Bearer <這邊放入token>"
 ```
 ## API for Admin Create、Update、Delete
 #### 3-1. 管理員手動新增帳戶 (需要admin、jwt token)
